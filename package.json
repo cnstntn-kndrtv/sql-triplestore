@@ -1,0 +1,24 @@
+{
+  "name": "sql-triplestore",
+  "version": "1.0.0",
+  "description": "RDF triplestore on top of SQL database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sql",
+    "rdf",
+    "triplesstore",
+    "hexastore"
+  ],
+  "author": "Constantin Kondratyev",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "hdt": "^2.1.0",
+    "mysql2": "^1.5.3",
+    "n3": "^0.11.3",
+    "sequelize": "^4.37.6",
+    "sqlite3": "^4.0.0"
+  }
+}
