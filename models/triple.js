@@ -13,7 +13,7 @@ module.exports = function (sequelize, DataTypes, params) {
     async function getUri(id, type) {
         let assist = params.assistModels[type];
         let result = await assist.findOne({where: {id: id}})
-        let uri = result.uri
+        let uri = unescape(result.uri);
         return uri;
     }
 
@@ -33,7 +33,6 @@ module.exports = function (sequelize, DataTypes, params) {
         for (let uri in uris) {
             if (!uriArray.includes(uri)) uriArray.push(uri);
         }
-
         let assist = params.assistModels[type];
         await assist
             .findAll({
@@ -51,14 +50,14 @@ module.exports = function (sequelize, DataTypes, params) {
                 }
                 else {
                     for ( let i = 0; i < uriArrayLength; i++ ) {
-                        newEntries.push({uri: uriArray[i]});
+                        newEntries.push({uri: uriArray[i]})
                     }
                 }
                 return newEntries;
             })
             .then((newEntries) => {
                 if (newEntries.length > 0) {
-                    return assist.bulkCreate(newEntries)
+                    return assist.bulkCreate(newEntries);
                 }
                 else return
             })
@@ -145,7 +144,16 @@ module.exports = function (sequelize, DataTypes, params) {
 
     function escape(str) {
         if (typeof(str) == 'string') {
-            str = str.replace(/[\"]/g, '\\"');
+            str = str.replace(/"/g, '\\"');
+            str = str.replace(/'/g, "\\'");
+        }
+        return (str)
+    }
+
+    function unescape(str) {
+        if (typeof(str) == 'string') {
+            str = str.replace(/\\"/g, '"');
+            str = str.replace(/\\'/g, "'");
         }
         return (str)
     }

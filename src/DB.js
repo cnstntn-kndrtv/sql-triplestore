@@ -12,7 +12,7 @@ module.exports = class DB {
             password: params.password,
             operatorsAliases: Op,
             storage: params.storage,
-            logging: false
+            logging: false,
         }
     
         this._db = new Sequelize(this._dbConfig);
@@ -29,10 +29,10 @@ module.exports = class DB {
         let assistModels = {
             subject: this._sModel,
             predicate: this._pModel,
-            object: this._oModel
+            object: this._oModel,
         }
 
-        this._model = require('../models/triple')(this._db, Sequelize.DataTypes, { table: this._triplesTableName,  assistModels: assistModels});
+        this._model = require('../models/triple')(this._db, Sequelize.DataTypes, { table: this._triplesTableName,  assistModels: assistModels });
 
         this.description = (this._dbConfig.dialect == 'sqlite') ? 
             `${this._dbConfig.storage} : ${this._dbConfig.database} / ${this._triplesTableName}` :
@@ -61,15 +61,17 @@ module.exports = class DB {
   
     async put(triples, cb) {
         let triplesLength;
-        if (Array.isArray(triples)) {
-            await this._model.bulkCreate(triples);
-            triplesLength = triples.length;
+        if (triples) {
+            if (Array.isArray(triples)) {
+                await this._model.bulkCreate(triples);
+                triplesLength = triples.length;
+            }
+            else if (triples) {
+                await this._model.create(triples);
+                triplesLength = 1;
+            }
+            console.log(`put ${triplesLength} triples at ${this.description}`);
         }
-        else {
-            await this._model.create(triples);
-            triplesLength = 1;
-        }
-        console.log(`put ${triplesLength} triples at ${this.description}`);
         if (cb) cb();
     }
 

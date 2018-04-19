@@ -11,7 +11,7 @@ module.exports = function (sequelize, DataTypes, params) {
                 name: 'uri',
                 method: 'HASH',
                 fields: [ { attribute: 'uri', length: 255} ],
-                unique: true,
+                // unique: true,
             },
         ]
     };
