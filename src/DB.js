@@ -70,7 +70,7 @@ module.exports = class DB {
             triplesLength = 1;
         }
         console.log(`put ${triplesLength} triples at ${this.description}`);
-        cb();
+        if (cb) cb();
     }
 
     async get(triple, limit, offset) {
